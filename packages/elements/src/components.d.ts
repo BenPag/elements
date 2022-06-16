@@ -13,17 +13,21 @@ import { SortDirection, SortDirectionChangeDetails } from "./interface";
 export namespace Components {
     interface InoAutocomplete {
         /**
-          * Timeout of the debouncing mechanism used when filtering the options.
+          * Number of ms the search function should be delayed after the user typed something.
          */
-        "debounceTimeout": number;
+        "debounce": number;
         /**
-          * Text to display when there are no options found.
+          * Text to display when there are no options found, where `$` is the placeholder for the input of the user.
          */
         "noOptionsText": string;
         /**
-          * Value of the autocomplete
+          * All options either as a string array or as an array of `{key: string; value: string}` objects.
          */
-        "value": any;
+        "options": string[];
+        /**
+          * The selected value.
+         */
+        "value": string | null;
     }
     interface InoButton {
         /**
@@ -1709,21 +1713,25 @@ declare global {
 declare namespace LocalJSX {
     interface InoAutocomplete {
         /**
-          * Timeout of the debouncing mechanism used when filtering the options.
+          * Number of ms the search function should be delayed after the user typed something.
          */
-        "debounceTimeout"?: number;
+        "debounce"?: number;
         /**
-          * Text to display when there are no options found.
+          * Text to display when there are no options found, where `$` is the placeholder for the input of the user.
          */
         "noOptionsText"?: string;
         /**
-          * Emits in three ways:  1. Clicking on an option 2. Pressing `Enter` while an option is selected 3. Entering a valid value and blurring the input element  Contains one of the texts provided by the `<ino-options>`s.
+          * Emits the list item the user clicked on. If Key-Value-Objects are provided as `options`, the `key` of the selected option will be emitted.  Trigger on two occasions: 1. The user clicked on a list-item.
          */
-        "onValueChange"?: (event: CustomEvent<string | null>) => void;
+        "onValueChange"?: (event: CustomEvent<string>) => void;
         /**
-          * Value of the autocomplete
+          * All options either as a string array or as an array of `{key: string; value: string}` objects.
          */
-        "value"?: any;
+        "options"?: string[];
+        /**
+          * The selected value.
+         */
+        "value"?: string | null;
     }
     interface InoButton {
         /**

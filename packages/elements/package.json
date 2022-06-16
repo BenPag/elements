@@ -83,6 +83,7 @@
     "@material/textfield": "^13.0.0",
     "@material/typography": "^13.0.0",
     "@stencil/core": "2.14.0",
+    "@tarekraafat/autocomplete.js": "^10.2.7",
     "@tiptap/core": "^2.0.0-beta.159",
     "@tiptap/extension-link": "^2.0.0-beta.33",
     "@tiptap/starter-kit": "^2.0.0-beta.164",

@@ -6,7 +6,7 @@
   },
   "scripts": {
     "build": "lerna run build --ignore=elements-angular-example && lerna run build --scope=elements-angular-example",
-    "start": "(shx test -d ./packages/elements/dist || lerna run build --scope=@inovex.de/elements) && lerna run dev --parallel",
+    "start": "(shx test -d ./packages/elements/dist || lerna run build --scope=@inovex.de/elements) && lerna run dev --parallel --scope=@inovex.de/elements --scope=@inovex.de/elements-storybook",
     "changelog": "yarn changelog:root && yarn changelog:pkgs",
     "changelog:root": "standard-version",
     "changelog:pkgs": "lerna exec --concurrency 1 --stream 'standard-version'",
