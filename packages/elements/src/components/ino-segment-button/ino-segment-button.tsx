@@ -11,8 +11,6 @@ import {
 } from '@stencil/core';
 import classNames from 'classnames';
 
-import { generateUniqueId } from '../../util/component-utils';
-
 /**
  * @slot default - Label of the button
  */
@@ -22,7 +20,7 @@ import { generateUniqueId } from '../../util/component-utils';
   shadow: true,
 })
 export class InoSegmentButton implements ComponentInterface {
-  private buttonId = `ino-segment-button-id_${generateUniqueId()}`;
+
   private successor: Element;
   private belongsToGroup = false;
 
@@ -134,7 +132,6 @@ export class InoSegmentButton implements ComponentInterface {
         <button
           class={buttonClasses}
           disabled={this.disabled}
-          id={this.buttonId}
           name={this.name}
         >
           <div class="mdc-button__label">
