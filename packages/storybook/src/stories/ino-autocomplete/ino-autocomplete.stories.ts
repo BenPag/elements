@@ -36,7 +36,7 @@ export default {
 
 const options = [];
 
-for (let i = 0; i < 500; i++) {
+for (let i = 0; i < 50; i++) {
   options.push(
     html`
       <ino-option value="value of Option ${i}">${i}</ino-option>
