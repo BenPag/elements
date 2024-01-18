@@ -10,7 +10,7 @@
         "dryRun": false,
         "push": false,
         "commitMessageFormat": "chore: publish {version}",
-        "postTargets": ["deploy-npm", "deploy-github"]
+        "postTargets": ["deploy-npm"]
       },
       "configurations": {
         "prerelease": {
@@ -23,23 +23,10 @@
     },
     "deploy-npm": {
       "executor": "nx:run-commands",
-      "dependsOn": [
-        {
-          "projects": [
-            "elements",
-            "elements-angular",
-            "elements-react",
-            "elements-vue"
-          ],
-          "target": "build"
-        }
-      ],
+      "dependsOn": ["^build"],
       "options": {
         "commands": [
-          "npm publish -w packages/elements",
-          "npm publish -w packages/elements-angular",
-          "npm publish -w packages/elements-react",
-          "npm publish -w packages/elements-vue"
+          "nx release version $(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' package.json)"
         ],
         "parallel": false
       }
@@ -52,5 +39,11 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "elements",
+    "elements-angular",
+    "elements-react",
+    "elements-vue"
+  ]
 }

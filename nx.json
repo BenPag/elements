@@ -16,26 +16,6 @@
     },
     "lint": {
       "cache": true
-    },
-    "version": {
-      "executor": "@jscutlery/semver:version",
-      "dependsOn": ["^version"],
-      "options": {
-        "baseBranch": "master",
-        "syncVersions": true,
-        "trackDeps": false,
-        "dryRun": false,
-        "push": false,
-        "commitMessageFormat": "chore: publish {version}",
-      },
-      "configurations": {
-        "prerelease": {
-          "releaseAs": "prerelease",
-          "skipRootChangelog": true,
-          "postTargets": ["deploy-npm"],
-          "push": false
-        }
-      }
     }
   },
   "generators": {

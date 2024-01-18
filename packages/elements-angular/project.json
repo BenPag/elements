@@ -5,7 +5,6 @@
   "sourceRoot": "packages/elements-angular/src",
   "prefix": "ino",
   "targets": {
-    "version": {},
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
