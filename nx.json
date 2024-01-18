@@ -22,8 +22,8 @@
       "dependsOn": ["^version"],
       "options": {
         "baseBranch": "master",
-        "syncVersions": false,
-        "trackDeps": true,
+        "syncVersions": true,
+        "trackDeps": false,
         "dryRun": false,
         "push": false,
         "commitMessageFormat": "chore: publish {version}",
