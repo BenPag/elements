@@ -18,7 +18,7 @@
     "lint:fix": "nx affected --target=lint --configuration=fix --output-style=stream --exclude workspace",
     "format": "nx format:check --exclude workspace",
     "format:fix": "nx format:write --exclude workspace",
-    "version": "nx affected --target version --exclude workspace",
+    "version": "nx run workspace:version",
     "qc": "yarn lint && yarn format && yarn build && yarn test",
     "clean": "nx run-many --target=clean --exclude workspace && shx rm -rf dist",
     "clean:node-modules": "nx run-many --target=clean --configuration=nodejs --exclude workspace && shx rm -rf node_modules"

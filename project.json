@@ -7,29 +7,21 @@
       "options": {
         "syncVersions": true,
         "skipProjectChangelog": true,
+        "skipCommit": true,
         "dryRun": false,
         "push": false,
-        "commitMessageFormat": "chore: publish {version}",
-        "postTargets": ["deploy-npm"]
+        "postTargets": ["release"]
       },
       "configurations": {
         "prerelease": {
           "releaseAs": "prerelease",
           "skipRootChangelog": true,
-          "postTargets": ["deploy-npm"],
-          "push": false
+          "postTargets": ["release"]
         }
       }
     },
-    "deploy-npm": {
-      "executor": "nx:run-commands",
-      "dependsOn": ["^build"],
-      "options": {
-        "commands": [
-          "nx release version $(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' package.json)"
-        ],
-        "parallel": false
-      }
+    "release": {
+      "command": "node ./scripts/release.js"
     },
     "deploy-github": {
       "executor": "@jscutlery/semver:github",
@@ -39,11 +31,11 @@
       }
     }
   },
-  "tags": [],
   "implicitDependencies": [
     "elements",
     "elements-angular",
     "elements-react",
     "elements-vue"
-  ]
+  ],
+  "tags": []
 }
