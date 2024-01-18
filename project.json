@@ -4,6 +4,7 @@
   "targets": {
     "release": {
       "executor": "@jscutlery/semver:version",
+      "dependsOn": ["^build"],
       "options": {
         "syncVersions": true,
         "skipProjectChangelog": true,
@@ -14,6 +15,7 @@
       }
     },
     "publish": {
+      "dependsOn": ["^build"],
       "command": "node ./scripts/publish.js"
     },
     "deploy-github": {
