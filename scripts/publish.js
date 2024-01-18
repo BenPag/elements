@@ -1,6 +1,4 @@
 const shell = require('shelljs');
-const fs = require('fs');
-const path = require('path');
 const semver = require('semver');
 
 const packagesToPublish = [
@@ -16,11 +14,11 @@ if (currentBranch !== 'master') {
   shell.exit(1)
 }
 
-const VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json',)).toString())['version'];
+const VERSION = shell.exec('npm pkg get version').trim() // get version from root package.json
 const isPreRelease = (semver.prerelease(VERSION) ?? []).length > 0
 
 if (!isPreRelease) {
-  shell.exec(`nx release version ${VERSION}`)
+  shell.exec(`nx release version ${VERSION}`) // keep internal packages up to date
   shell.exec(`git commit -m "chore: publish ${VERSION}" && git push --follow-tags`)
 } else {
   shell.exec(`git tag v${VERSION} && git push origin ${VERSION}`)
