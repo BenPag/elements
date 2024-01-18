@@ -2,7 +2,7 @@
   "name": "workspace",
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "targets": {
-    "version": {
+    "release": {
       "executor": "@jscutlery/semver:version",
       "options": {
         "syncVersions": true,
@@ -10,18 +10,11 @@
         "skipCommit": true,
         "dryRun": false,
         "push": false,
-        "postTargets": ["release"]
-      },
-      "configurations": {
-        "prerelease": {
-          "releaseAs": "prerelease",
-          "skipRootChangelog": true,
-          "postTargets": ["release"]
-        }
+        "postTargets": ["publish", "deploy-github"]
       }
     },
-    "release": {
-      "command": "node ./scripts/release.js"
+    "publish": {
+      "command": "node ./scripts/publish.js"
     },
     "deploy-github": {
       "executor": "@jscutlery/semver:github",
