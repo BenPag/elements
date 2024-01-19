@@ -15,8 +15,7 @@
       },
       "configurations": {
         "dryRun": {
-          "dryRun": true,
-          "postTargets": ["publish"]
+          "dryRun": true
         }
       }
     },
@@ -24,7 +23,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["^build"],
       "options": {
-        "command": "node ./scripts/publish.js dryRun={dryRun}"
+        "command": "node ./scripts/publish.js dryRun={args.dryRun}"
       }
     },
     "deploy-github": {
