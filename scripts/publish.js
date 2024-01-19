@@ -17,12 +17,12 @@ if (currentBranch !== 'master' && !isDryRun) {
   shell.exit(1);
 }
 
-const VERSION = shell.exec('npm pkg get version').trim(); // get version from root package.json
-const isPreRelease = (semver.prerelease(VERSION) ?? []).length > 0;
+const VERSION = shell.exec('npm pkg get version').trim().replace(/"/g, ''); // get version from root package.json
+const isPreRelease = Boolean(semver.prerelease(VERSION));
 
 if (!isPreRelease) {
   shell.exec(`nx release version ${dryRunArg} ${VERSION}`); // keep internal packages up to date
-  shell.exec(`git commit ${dryRunArg} -m "chore: publish ${VERSION}"`);
+  shell.exec(`git commit ${dryRunArg} -a -m "chore: publish ${VERSION}"`);
   shell.exec(`git push ${dryRunArg} --follow-tags`);
 } else {
   shell.exec(`git tag v${VERSION}`);
@@ -34,3 +34,4 @@ const npmTag = isPreRelease ? 'canary' : 'latest';
 packagesToPublish.forEach((npmPackage) => {
   shell.exec(`npm publish -w ${npmPackage} --tag ${npmTag} ${dryRunArg}`);
 });
+
