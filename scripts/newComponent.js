@@ -13,10 +13,13 @@ const CUSTOM_ELEMENTS_JSON = require(path.join(
 ));
 // */
 
-const CUSTOM_ELEMENTS_JSON = JSON.parse(fs.readFileSync(path.join(
-  __dirname,
-  '../packages/storybook/custom-elements.json',
-)).toString());
+const CUSTOM_ELEMENTS_JSON = JSON.parse(
+  fs
+    .readFileSync(
+      path.join(__dirname, '../packages/storybook/custom-elements.json'),
+    )
+    .toString(),
+);
 
 const ELEMENTS_COMPONENTS_DIR = path.join(
   __dirname,
