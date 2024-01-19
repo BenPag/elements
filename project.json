@@ -12,11 +12,20 @@
         "dryRun": false,
         "push": false,
         "postTargets": ["publish", "deploy-github"]
+      },
+      "configurations": {
+        "dryRun": {
+          "dryRun": true,
+          "postTargets": ["publish"]
+        }
       }
     },
     "publish": {
+      "executor": "nx:run-commands",
       "dependsOn": ["^build"],
-      "command": "node ./scripts/publish.js"
+      "options": {
+        "command": "node ./scripts/publish.js dryRun={dryRun}"
+      }
     },
     "deploy-github": {
       "executor": "@jscutlery/semver:github",
