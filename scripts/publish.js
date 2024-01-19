@@ -17,13 +17,16 @@ if (currentBranch !== 'master' && !isDryRun) {
   shell.exit(1);
 }
 
-const VERSION = shell.exec('npm pkg get version').trim().replace(/"/g, ''); // get version from root package.json
+// get version from root package.json
+// need to remove double quotes ("") from version string
+const VERSION = shell.exec('npm pkg get version').trim().replace(/"/g, '');
 const isPreRelease = Boolean(semver.prerelease(VERSION));
 
+shell.exec(`nx release version ${dryRunArg} ${VERSION}`); // keep internal packages up to date
+
 if (!isPreRelease) {
-  shell.exec(`nx release version ${dryRunArg} ${VERSION}`); // keep internal packages up to date
   shell.exec(`git commit ${dryRunArg} -a -m "chore: publish ${VERSION}"`);
-  shell.exec(`git push ${dryRunArg} --follow-tags`);
+  shell.exec(`git push ${dryRunArg} --atomic --follow-tags`);
 } else {
   shell.exec(`git tag v${VERSION}`);
   shell.exec(`git push ${dryRunArg} origin ${VERSION}`);
