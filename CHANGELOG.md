@@ -1,3 +1,14 @@
+## 9.0.1-debug.2 (2024-01-22)
+
+
+### 🚀 Features
+
+- **ui-patterns:** add login-pattern and finalize patterns page
+
+### ❤️  Thank You
+
+- Tobias Heim Galindo
+
 # Changelog
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
