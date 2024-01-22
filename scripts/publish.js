@@ -1,7 +1,9 @@
 const shell = require('shelljs');
 const semver = require('semver');
+const conventionalRecommendedBump = require('conventional-recommended-bump');
 
 const isDryRun = process.argv.some((a) => a.includes('dryRun=true'));
+const isPreRelease = process.argv.some((a) => a.includes('prerelease=true'));
 const dryRunArg = isDryRun ? '--dry-run' : ''
 
 const packagesToPublish = [
@@ -11,30 +13,36 @@ const packagesToPublish = [
   'packages/elements-vue',
 ];
 
-const currentBranch = shell.exec('git branch --show-current').trim();
-if (currentBranch !== 'master' && !isDryRun) {
-  shell.echo('Sorry, release is only on branch "master" allowed!');
-  shell.exit(1);
+async function getNextVersion() {
+  // get version from root package.json
+  // need to remove double quotes ("") from version string
+  const VERSION = shell.exec('npm pkg get version').trim().replace(/"/g, '');
+  const { releaseType } = await conventionalRecommendedBump({ preset: 'angular' })
+  return semver.inc(VERSION, isPreRelease ? 'prerelease' : releaseType);
 }
 
-// get version from root package.json
-// need to remove double quotes ("") from version string
-const VERSION = shell.exec('npm pkg get version').trim().replace(/"/g, '');
-const isPreRelease = Boolean(semver.prerelease(VERSION));
+(async () => {
+  const currentBranch = shell.exec('git branch --show-current').trim();
+  if (currentBranch !== 'master' && !isDryRun) {
+    shell.echo('Sorry, release is only on branch "master" allowed!');
+    shell.exit(1);
+  }
 
-shell.exec(`nx release version ${dryRunArg} ${VERSION}`); // keep internal packages up to date
+  const version = await getNextVersion();
 
-if (!isPreRelease) {
-  shell.exec(`git commit ${dryRunArg} -a -m "chore: publish ${VERSION}"`);
-  shell.exec(`git push ${dryRunArg} --atomic --follow-tags`);
-} else {
-  shell.exec(`git tag v${VERSION}`);
-  shell.exec(`git push ${dryRunArg} origin ${VERSION}`);
-}
+  if (isPreRelease) {
+    shell.exec(`nx release version ${dryRunArg} --git-tag ${version}`);
+  } else {
+    shell.exec(`nx release changelog ${dryRunArg} ${version}`);
+    shell.exec(`nx release version ${dryRunArg} --git-tag --git-commit --git-commit-message="chore: publish ${version}" ${version}`);
+  }
 
-// deploy packages to npm
-const npmTag = isPreRelease ? 'canary' : 'latest';
-packagesToPublish.forEach((npmPackage) => {
-  shell.exec(`npm publish -w ${npmPackage} --tag ${npmTag} ${dryRunArg}`);
-});
+  // check if user is logged in
+  if (shell.exec('npm whoami').code !== 0) shell.exit(1);
 
+  const npmTag = isPreRelease ? 'canary' : 'latest';
+  for (const npmPackage of packagesToPublish) {
+    const { code } = shell.exec(`npm publish -w ${npmPackage} --tag ${npmTag} ${dryRunArg}`);
+    if (code !== 0) shell.exit(1)
+  }
+})();

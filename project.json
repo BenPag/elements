@@ -15,7 +15,7 @@
       },
       "configurations": {
         "dryRun": {
-          "dryRun": true
+          "postTargets": ["publish"]
         }
       }
     },
