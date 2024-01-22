@@ -23,18 +23,16 @@ async function getNextVersion() {
 
 (async () => {
   const currentBranch = shell.exec('git branch --show-current').trim();
-  if (false && currentBranch !== 'master' && !isDryRun) {
+  if (currentBranch !== 'master' && !isDryRun) {
     shell.echo('Sorry, release is only on branch "master" allowed!');
     shell.exit(1);
   }
 
-  const version = await getNextVersion();
-
   if (isPreRelease) {
-    shell.exec(`nx release version ${version} ${dryRunArg} --git-tag`);
+    shell.exec(`nx release version prerelease ${dryRunArg} --git-commit=false`);
   } else {
-    shell.exec(`nx release version ${version} ${dryRunArg} --stage-changes`);
-    shell.exec(`nx release changelog ${version} ${dryRunArg} --git-tag --git-commit --git-commit-message="chore: publish ${version}"`);
+    const version = await getNextVersion();
+    shell.exec(`nx release ${version} ${dryRunArg} --git-remote BenPag/elements --skip-publish`);
   }
 
   // check if user is logged in
