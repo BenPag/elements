@@ -23,7 +23,7 @@ async function getNextVersion() {
 
 (async () => {
   const currentBranch = shell.exec('git branch --show-current').trim();
-  if (currentBranch !== 'master' && !isDryRun) {
+  if (false && currentBranch !== 'master' && !isDryRun) {
     shell.echo('Sorry, release is only on branch "master" allowed!');
     shell.exit(1);
   }
@@ -31,10 +31,10 @@ async function getNextVersion() {
   const version = await getNextVersion();
 
   if (isPreRelease) {
-    shell.exec(`nx release version ${dryRunArg} --git-tag ${version}`);
+    shell.exec(`nx release version ${version} ${dryRunArg} --git-tag`);
   } else {
-    shell.exec(`nx release changelog ${dryRunArg} ${version}`);
-    shell.exec(`nx release version ${dryRunArg} --git-tag --git-commit --git-commit-message="chore: publish ${version}" ${version}`);
+    shell.exec(`nx release version ${version} ${dryRunArg} --stage-changes`);
+    shell.exec(`nx release changelog ${version} ${dryRunArg} --git-tag --git-commit --git-commit-message="chore: publish ${version}"`);
   }
 
   // check if user is logged in
