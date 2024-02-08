@@ -69,8 +69,8 @@ const commitScopes = [
   'elements-angular-example',
   'elements-react-example',
   'elements-vue-example',
-  '*',
+  "'*'",
   'deps',
 ];
 
-fs.writeFileSync('commit-scopes.txt', '\n' + commitScopes.join('\n') + '\n');
+fs.writeFileSync('commit-scopes.txt', commitScopes.join('\n') + '\n');
