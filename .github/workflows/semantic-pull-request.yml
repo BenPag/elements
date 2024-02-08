@@ -1,7 +1,6 @@
 name: 'Lint PR'
 
 on:
-  workflow_dispatch:
   pull_request_target:
     types:
       - opened
@@ -12,11 +11,10 @@ jobs:
   main:
     name: Confirm semantic PR title
     runs-on: ubuntu-latest
-    needs:
-      - get_scopes
     steps:
       - uses: actions/checkout@v4
-      - id: scopes
+      - name: Load valid commit scopes from repo
+        id: scopes
         run: |
           node commit-scope-enum.js
           delimiter="EOF"
