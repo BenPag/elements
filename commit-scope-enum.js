@@ -73,4 +73,4 @@ const commitScopes = [
   'deps',
 ];
 
-fs.writeFileSync('commit-scopes.txt', commitScopes.join(','));
+fs.writeFileSync('commit-scopes.txt', commitScopes.join('\n'));

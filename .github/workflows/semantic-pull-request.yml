@@ -20,9 +20,9 @@ jobs:
       - id: scopes
         run: |
           {
-            echo 'JSON_RESPONSE<<,'
+            echo 'JSON_RESPONSE<<\n'
             cat commit-scopes.txt
-            echo ,
+            echo \n
           } >> "$GITHUB_OUTPUT"
 
   main:
