@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const separator = '|';
+const separator = '/';
 const packages = [
   'elements',
   'elements-angular',
