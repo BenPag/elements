@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: node commit-scope-enum.js
       - id: scopes
-        run: echo "scopes=$(cat commit-scopes.txt)" >> "$GITHUB_OUTPUT"
+        run: echo "scopes='$(cat commit-scopes.txt)'" >> "$GITHUB_OUTPUT"
 
   main:
     name: Confirm semantic PR title
